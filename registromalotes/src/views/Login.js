@@ -6,7 +6,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import React, {useState, useLayoutEffect} from 'react'
 import {storageSave,storageRemove,storageGet} from "../services/Storage"
-import {login}from '../services/Firebase'
+import {login, sigin}from '../services/Firebase'
 import {useHistory} from "react-router-dom";
 
 
@@ -40,6 +40,13 @@ function Login() {
     .then(() => history.push("/home"))
     .catch(error => console.log(error))
 
+  }
+
+  const novoRegistro = async () =>{
+      sigin(email, password)
+      .then((retorno) => {
+      }).catch(error => {
+      })
   }
 
 
@@ -83,6 +90,10 @@ function Login() {
       </FormGroup>
       <Button variant="contained" size="small" onClick={efetuarLogin}>
           Login
+        </Button>
+        <span> </span>
+        <Button variant="contained" size="small" onClick={novoRegistro}>
+          Novo Registro
         </Button>
       <Grid item xs={3}> </Grid>
       </Grid>

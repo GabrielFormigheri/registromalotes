@@ -1,5 +1,5 @@
 import { initializeApp} from "firebase/app";
-import { getAuth, signInWithEmailAndPassword, signOut}  from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword}  from "firebase/auth";
 import {storageSave, storageRemove, storageGet} from './Storage'
 import { getFirestore } from "firebase/firestore";
 import {collection, addDoc, getDocs, deleteDoc, doc} from "firebase/firestore"
@@ -30,6 +30,21 @@ export const login = (email, password) => {
     })
 
 }
+
+
+export const sigin = (email, password) => {
+    return new Promise((resolve, reject) => {
+        createUserWithEmailAndPassword(auth,email, password)
+        .then(()=>{
+            resolve("Registro realizado com sucesso!")
+        })
+        .catch(()=>{
+            reject()
+        })
+    })
+
+}
+
 
 export const logoff = () =>{
     return new Promise((resolve, reject) => {
