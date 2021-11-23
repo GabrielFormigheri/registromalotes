@@ -5,7 +5,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import React, {useState, useLayoutEffect} from 'react'
-import {storageSave,storageRemove,storageGet} from "./services/storage"
+import {storageSave,storageRemove,storageGet} from "./services/Storage"
 
 function App() {
   const [lembreme, setLembreme] = useState(false)
@@ -22,7 +22,7 @@ function App() {
 
   const handleLembreme = (e)=> {
    setLembreme(e.target.checked)
-   if(e.target.checked == true){
+   if(e.target.checked === true){
      storageSave("email",email)
    }else{
      storageRemove("email")
