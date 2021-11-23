@@ -14,16 +14,23 @@ export default function Menu() {
 
     return (
         <Grid container spacing={1}>
-            <Grid item xs={3}> 
-            <Button fullWidth variant="outlined">Cadastrar novo Malote</Button> 
+            <Grid item xs={2}>
+            <Button onClick={() => history.push("/home")}
+            fullWidth variant="outlined">Home</Button> 
             </Grid>
-            <Grid item xs={3}> 
-            <Button fullWidth variant="outlined">Visualizar Malotes</Button> 
+            <Grid item xs={2}>
+            <Button onClick={() => history.push("/malotes")}
+            fullWidth variant="outlined">Cadastrar novo Malote</Button> 
             </Grid>
-            <Grid item xs={3}> 
+            <Grid item xs={2}>
+            <Button
+            onClick={() => history.push("/maloteslista")}
+            fullWidth variant="outlined">Visualizar Malotes</Button> 
+            </Grid>
+            <Grid item xs={2}> 
             <Button fullWidth variant="outlined">Ticos</Button> 
             </Grid>
-            <Grid item xs={3}> 
+            <Grid item xs={2}> 
             <Button variant="outlined" onClick={efetuarLogoff}>Logoff</Button> 
             </Grid>
         </Grid>

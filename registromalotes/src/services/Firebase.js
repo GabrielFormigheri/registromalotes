@@ -1,6 +1,8 @@
 import { initializeApp} from "firebase/app";
 import { getAuth, signInWithEmailAndPassword, signOut}  from "firebase/auth";
 import {storageSave, storageRemove, storageGet} from './Storage'
+import { getFirestore } from "firebase/firestore";
+import {collection, addDoc, getDocs, deleteDoc, doc} from "firebase/firestore"
 const firebaseConfig = {
   apiKey: "AIzaSyB8pOLZmxRitogQRYN1rrVwjLXzBbnjJVY",
   authDomain: "cadastromalotes.firebaseapp.com",
@@ -10,8 +12,8 @@ const firebaseConfig = {
   appId: "1:732820600858:web:0c6583b8e89fab442479a3"
 };
 
-
-const firebase = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
+const db = getFirestore();
 const auth = getAuth();
 
 export const login = (email, password) => {
@@ -42,6 +44,47 @@ export const logoff = () =>{
     }
     ) 
 
+}
+
+export const saveMalotes = (malote) => {
+    return new Promise( async (resolve,reject)=> {
+        try{
+            await addDoc(collection(db,"malotes"), malote);
+            resolve()
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
+export const deleteMalotes = (id) => {
+    return new Promise( async (resolve,reject)=> {
+        try{
+            await deleteDoc(doc(db, 'malotes',id));
+            resolve()
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
+export const getMalotes = () => {
+    return new Promise( async (resolve,reject)=> {
+        try{
+            const querySnapshot = await getDocs(collection(db, "malotes"));
+            let dados = []
+            querySnapshot.forEach((doc) => {
+                dados.push({
+                    id: doc.id,
+                    agencia: doc.data().agencia,
+                    vv: doc.data().vv
+                })
+            });
+            resolve(dados)
+        } catch (error) {
+            reject(error)
+        }
+    })
 }
 
 export const isAuthenticated = ()=> storageGet("TOKEN_KEY") !== null;
