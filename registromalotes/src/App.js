@@ -1,80 +1,39 @@
-import TextField from '@mui/material/TextField';
-import Grid from '@mui/material/Grid'
-import Button from '@mui/material/Button';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import React, {useState, useLayoutEffect} from 'react'
-import {storageSave,storageRemove,storageGet} from "./services/Storage"
-
+import React, { Component } from 'react'
+import {BrowserRouter,Route,Switch, Redirect} from 'react-router-dom'
+import {isAuthenticated} from './services/Firebase'
+import Login from './views/Login'
+import Home from './views/Home'
+import Menu from './componentes/Menu'
 function App() {
-  const [lembreme, setLembreme] = useState(false)
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
 
-  useLayoutEffect(()=>{
-    let emailStorage = storageGet("email")
-    if(emailStorage){
-      setEmail(emailStorage)
-    }
+const PrivateRoute = ({component: Component, ...rest}) => {
+  return <Route
+  {...rest}
+  render={props => isAuthenticated() ? (
+    <>
+      <Menu />
+      <Component {...props} />
 
-  },[])
-
-  const handleLembreme = (e)=> {
-   setLembreme(e.target.checked)
-   if(e.target.checked === true){
-     storageSave("email",email)
-   }else{
-     storageRemove("email")
-   }
-
+    </>
+  ) : (
+    <Redirect to={{pathname: "/", state: {from:props.location}}}/>
+  )
   }
-
-
-
+  /> 
+}
   return (
-    <Grid container spacing={1}>
-      <Grid item xs={3}>
-      </Grid>
-      <Grid item xs={6}>
-      <TextField 
-      type="email" 
-      id="outlined-basic" 
-      label="E-mail" 
-      variant="outlined" 
-      value={email}
-      onChange={(e) => setEmail(e.target.value)}
+    <BrowserRouter>
+      <Switch>
+        <Route path="/" exact={true} component={Login} />
+        <PrivateRoute path="/home" component={Home} />
+        <Route path="*" component={Login}/>
 
-      />
-      </Grid>
-      <Grid item xs={3}>
-      </Grid>
-      <Grid item xs={3}>
-      </Grid>
-      <Grid item xs={6}>
-      <TextField type="password" 
-      id="outlined-basic" 
-      label="Password" 
-      variant="outlined"
-      value={password}
-      onChange={(e) => setPassword(e.target.value)}
- 
-      />
-      </Grid>
-      <Grid item xs={3}>
-      </Grid>
-      <Grid item xs={3}>
-      </Grid>
-      <Grid item xs={6}>
-      <FormGroup>
-      <FormControlLabel control={<Checkbox checked={lembreme} onChange={handleLembreme} />} label="Lembre-me" />
-      </FormGroup>
-      <Button variant="contained" size="small">
-          Login
-        </Button>
-      <Grid item xs={3}> </Grid>
-      </Grid>
-    </Grid>
+      </Switch>
+    
+    
+    
+    
+    </BrowserRouter>
   );
 }
 
